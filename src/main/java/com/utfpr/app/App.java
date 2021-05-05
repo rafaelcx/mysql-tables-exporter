@@ -1,10 +1,12 @@
 package com.utfpr.app;
 
-import com.utfpr.app.Factory.CommandLineInput;
+import com.utfpr.app.Factory.CommandLineInputFactory;
+import com.utfpr.app.Factory.DbConnectionFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Connection;
 
 public class App {
 
@@ -12,8 +14,8 @@ public class App {
         System.out.println("Please enter your arguments here:");
         String argument_list = getArgumentsFromCommandLine();
 
-        // Building object that holds the arguments from cli
-        CommandLineInput cli_input = CommandLineInput.build(argument_list);
+        CommandLineInputFactory cli_input = CommandLineInputFactory.build(argument_list);
+        Connection db_connection = DbConnectionFactory.createConnection();
     }
 
     private static String getArgumentsFromCommandLine() throws IOException {

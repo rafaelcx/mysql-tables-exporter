@@ -2,7 +2,7 @@ package com.utfpr.app.Factory;
 
 import java.util.StringTokenizer;
 
-public class CommandLineInput {
+public class CommandLineInputFactory {
 
     private String db_server;
     private String user;
@@ -10,7 +10,7 @@ public class CommandLineInput {
     private String db_name;
     private String table;
 
-    private CommandLineInput(String db_server, String user, String password, String db_name, String table) {
+    private CommandLineInputFactory(String db_server, String user, String password, String db_name, String table) {
         this.db_server = db_server;
         this.user = user;
         this.password = password;
@@ -18,7 +18,7 @@ public class CommandLineInput {
         this.table = table;
     }
 
-    public static CommandLineInput build(String argument_list) throws Exception {
+    public static CommandLineInputFactory build(String argument_list) throws Exception {
         StringTokenizer st = new StringTokenizer(argument_list);
 
         validateArgumentListSize(st);
@@ -34,7 +34,7 @@ public class CommandLineInput {
             table = st.nextToken();
         }
 
-        return new CommandLineInput(db_server, user, password, db_name, table);
+        return new CommandLineInputFactory(db_server, user, password, db_name, table);
     }
 
     public String getDbServer() {
