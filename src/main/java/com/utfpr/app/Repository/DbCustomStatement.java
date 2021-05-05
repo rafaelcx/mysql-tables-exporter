@@ -39,11 +39,18 @@ public class DbCustomStatement {
             StringBuilder string_builder = new StringBuilder();
 
             for (int i = 0; i < column_name_list.size(); i++) {
-                string_builder.append(result_set.getString(column_name_list.get(i)));
+                string_builder.append('"' + result_set.getString(column_name_list.get(i)) + '"');
                 string_builder.append(",");
             }
 
-            row_data_list.add(string_builder.toString());
+            String row_data = string_builder.toString();
+
+            // Removing trailing comma from the end of the string
+            row_data = row_data.length() == 0
+                    ? null
+                    : (row_data.substring(0, row_data.length() - 1));
+
+            row_data_list.add(row_data);
         }
 
         statement.close();
