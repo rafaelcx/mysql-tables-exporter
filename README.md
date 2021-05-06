@@ -27,3 +27,5 @@ four arguments separated by an empty space plus an optional one:
 5. (optional) The table name that you want to export. If none is provided all tables will be exported
 
 Example: `localhost:3306 root password university course`
+
+Resulting .csv files should be created at the `user.home` path on your machine

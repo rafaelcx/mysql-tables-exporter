@@ -57,4 +57,19 @@ public class DbCustomStatement {
         return row_data_list;
     }
 
+    public List<String> getAllTablesFromDb(String db_name) throws SQLException {
+        Statement statement = this.db_connection.createStatement();
+        ResultSet table_names = statement.executeQuery("SHOW tables");
+
+        List<String> table_names_list = new ArrayList<String>();
+
+        while (table_names.next()) {
+            table_names.getRow();
+            table_names_list.add(table_names.getString("tables_in_" + db_name));
+        }
+
+        statement.close();
+        return table_names_list;
+    }
+
 }

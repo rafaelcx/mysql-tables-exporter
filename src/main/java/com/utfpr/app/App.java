@@ -19,11 +19,24 @@ public class App {
         Connection db_connection = DbConnectionFactory.createConnection(cli_input);
 
         DbCustomStatement db_custom_conn = new DbCustomStatement(db_connection);
-        List<String> column_name_list = db_custom_conn.getColumnNameListFromTable(cli_input.getTable());
-        List<String> row_data_list = db_custom_conn.getRowDataListFromTable(cli_input.getTable(), column_name_list);
 
-        File csv_file = CsvHandler.createCsvFile(cli_input.getDbName(), cli_input.getTable());
-        CsvHandler.exportDataToCsvFile(csv_file, column_name_list, row_data_list);
+        if (cli_input.getTable().equals("")) {
+            List<String> all_tables = db_custom_conn.getAllTablesFromDb(cli_input.getDbName());
+
+            for (int i = 0; i < all_tables.size(); i++) {
+                List<String> column_name_list = db_custom_conn.getColumnNameListFromTable(all_tables.get(i));
+                List<String> row_data_list = db_custom_conn.getRowDataListFromTable(all_tables.get(i), column_name_list);
+
+                File csv_file = CsvHandler.createCsvFile(cli_input.getDbName(), all_tables.get(i));
+                CsvHandler.exportDataToCsvFile(csv_file, column_name_list, row_data_list);
+            }
+        } else {
+            List<String> column_name_list = db_custom_conn.getColumnNameListFromTable(cli_input.getTable());
+            List<String> row_data_list = db_custom_conn.getRowDataListFromTable(cli_input.getTable(), column_name_list);
+
+            File csv_file = CsvHandler.createCsvFile(cli_input.getDbName(), cli_input.getTable());
+            CsvHandler.exportDataToCsvFile(csv_file, column_name_list, row_data_list);
+        }
 
         db_connection.close();
     }
