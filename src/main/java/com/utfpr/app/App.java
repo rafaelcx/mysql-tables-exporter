@@ -7,6 +7,7 @@ import com.utfpr.app.Repository.DbCustomStatement;
 
 import java.io.*;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class App {
@@ -24,21 +25,21 @@ public class App {
             List<String> all_tables = db_custom_conn.getAllTablesFromDb(cli_input.getDbName());
 
             for (int i = 0; i < all_tables.size(); i++) {
-                List<String> column_name_list = db_custom_conn.getColumnNameListFromTable(all_tables.get(i));
-                List<String> row_data_list = db_custom_conn.getRowDataListFromTable(all_tables.get(i), column_name_list);
-
-                File csv_file = CsvHandler.createCsvFile(cli_input.getDbName(), all_tables.get(i));
-                CsvHandler.exportDataToCsvFile(csv_file, column_name_list, row_data_list);
+                  exportTableInfoToCsvFile(db_custom_conn, cli_input.getDbName(), all_tables.get(i));
             }
         } else {
-            List<String> column_name_list = db_custom_conn.getColumnNameListFromTable(cli_input.getTable());
-            List<String> row_data_list = db_custom_conn.getRowDataListFromTable(cli_input.getTable(), column_name_list);
-
-            File csv_file = CsvHandler.createCsvFile(cli_input.getDbName(), cli_input.getTable());
-            CsvHandler.exportDataToCsvFile(csv_file, column_name_list, row_data_list);
+              exportTableInfoToCsvFile(db_custom_conn, cli_input.getDbName(), cli_input.getTable());
         }
 
         db_connection.close();
+    }
+
+    private static void exportTableInfoToCsvFile(DbCustomStatement db_custom_conn, String db_name, String table) throws SQLException, IOException {
+        List<String> column_name_list = db_custom_conn.getColumnNameListFromTable(table);
+        List<String> row_data_list = db_custom_conn.getRowDataListFromTable(table, column_name_list);
+
+        File csv_file = CsvHandler.createCsvFile(db_name, table);
+        CsvHandler.exportDataToCsvFile(csv_file, column_name_list, row_data_list);
     }
 
     private static String getArgumentsFromCommandLine() throws IOException {

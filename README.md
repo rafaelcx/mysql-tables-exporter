@@ -28,4 +28,6 @@ four arguments separated by an empty space plus an optional one:
 
 Example: `localhost:3306 root password university course`
 
+P.S. To export all tables from a given database simply repeat the statement above without specifying the table param
+
 Resulting .csv files should be created at the `user.home` path on your machine
